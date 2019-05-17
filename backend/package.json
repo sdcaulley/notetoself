@@ -4,7 +4,7 @@
   "description": "backend for notetoself refresh",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --recursive",
     "start": "nodemon server.js"
   },
   "author": "sdcaulley",
