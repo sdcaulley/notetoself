@@ -3,15 +3,15 @@ const isEmpty = require('./is-empty');
 
 function validateLoginInput(data) {
     let errors = {};
-    data.email = !isEmpty(data.email) ? data.email : '';
+    data.login = !isEmpty(data.login) ? data.login : '';
     data.password = !isEmpty(data.password) ? data.password : '';
 
-    if(!Validator.isEmail(data.email)) {
-        errors.email = 'Email is invalid';
+    if(!Validator.isEmail(data.login)) {
+        errors.login = 'Email is invalid';
     }
 
-    if(Validator.isEmpty(data.email)) {
-        errors.email = 'Email is required';
+    if(Validator.isEmpty(data.login)) {
+        errors.login = 'Email is required';
     }
 
     if(!Validator.isLength(data.password, {min: 6, max: 30})) {
