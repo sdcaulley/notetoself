@@ -18,14 +18,5 @@ module.exports = passport => {
                 return done(null, result);
             }
         });
-
-        // db.query(queryStatement)
-        //     .then(user => {
-        //         if(user) {
-        //             return done(null, user);
-        //         }
-        //         return done(null, false);
-        //     })
-        //     .catch(err => console.error(err));
     }));
 };
