@@ -7,6 +7,19 @@ const validateRegisterInput = require('../validation/register');
 //const validateLoginInput = require('../validation/login');
 const db = require('../connection');
 
+async function dbQuery(sql) {
+    let response = await db.query(sql);
+    if (response.err) {
+        console.log('err: ', response.err);
+    } else if (response.length > 0) {
+        return response.status(400).json({
+            user: 'User already exists'
+        });
+    } else {
+        return response;
+    }
+}
+
 userRouter.post('/register', function(req, res) {
     const { errors, isValid } = validateRegisterInput(req.body);
     if(!isValid) {
@@ -16,32 +29,24 @@ userRouter.post('/register', function(req, res) {
     let newUser = req.body;
     let sql = `SELECT id FROM notes_users WHERE login = '${ newUser.login }'`;
 
-    db.query(sql, (err, result) => {
-        if (err) {
-            console.log('register err:', err);
-        } else if (result.length > 0) {
-            return res.status(400).json({
-                user: 'User already exists'
-            });
+    dbQuery(sql);
+
+    bcrypt.genSalt(10, (err, salt) => {
+        if(err) {
+            console.log('There was and error: ', err);
         } else {
-            bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
                 if(err) {
-                    console.log('There was and error: ', err);
+                    console.log('There was an error: ', err);
                 } else {
-                    bcrypt.hash(newUser.password, salt, (err, hash) => {
+                    newUser.password = hash;
+                    const sql = `INSERT INTO notes_users(login, password, displayname) VALUES ('${newUser.login}', '${newUser.password}', '${newUser.displayname}')`;
+
+                    db.query(sql, (err, response) => {
                         if(err) {
                             console.log('There was an error: ', err);
                         } else {
-                            newUser.password = hash;
-                            const sql = `INSERT INTO notes_users(login, password, displayname) VALUES ('${newUser.login}', '${newUser.password}', '${newUser.displayname}')`;
-
-                            db.query(sql, (err, response) => {
-                                if(err) {
-                                    console.log('There was an error: ', err);
-                                } else {
-                                    res.json(response);
-                                }
-                            });
+                            res.json(response);
                         }
                     });
                 }
@@ -49,6 +54,19 @@ userRouter.post('/register', function(req, res) {
         }
     });
 });
+
+
+// userRouter.post('/login', (req, res) => {
+//     const { errors, isValid } = validateLoginInput(req.body);
+//     if(!isValid) {
+//         return res.status(400).json(errors);
+//     }
+//
+//     const email = res.body.login;
+//     const password = res.body.password;
+//
+//
+// });
 
 // userRouter.post('/login', (req, res) => {
 //     const { errors, isValid } = validateLoginInput(req.body);
