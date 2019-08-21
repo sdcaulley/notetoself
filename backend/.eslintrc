@@ -13,14 +13,20 @@
         "mocha": true,
         "es6": true,
         "mongo": true,
-        "commonjs": true
+        "commonjs": true,
+        "jquery": true
     },
     "extends": "eslint:recommended",
     "rules": {
         "no-console": "off",
         "indent": [
             "error",
-            4
+            2,
+            { "SwitchCase": 1 }
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
         ],
         "quotes": [
             "error",
@@ -31,6 +37,6 @@
             "always"
         ],
         "prefer-spread": "error",
-        "prefer-template": "error" 
+        "prefer-template": "error"
     }
 }

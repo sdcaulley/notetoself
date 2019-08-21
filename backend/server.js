@@ -6,5 +6,5 @@ require('./lib/connection');
 const server = http.createServer(app);
 
 server.listen(PORT, () => {
-    console.log('server is running on ', server.address());
+  console.log('server is running on ', server.address());
 });
