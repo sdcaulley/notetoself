@@ -1,6 +1,9 @@
 {
   "name": "backend",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=8.10.0"
+  },
   "description": "backend for notetoself refresh",
   "main": "server.js",
   "scripts": {
