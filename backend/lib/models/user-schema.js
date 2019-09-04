@@ -8,7 +8,7 @@ let UserSchema = new mongoose.Schema({
     unique: true,
     require: true
   },
-  hash: {
+  password: {
     type: String,
     rquire: true
   },
@@ -19,7 +19,6 @@ let UserSchema = new mongoose.Schema({
 });
 
 UserSchema.pre('save', function(next) {
-  console.log('inside pre');
   const user = this;
   if (!user.isModified('password')) {
     return next();
@@ -34,9 +33,7 @@ UserSchema.pre('save', function(next) {
 });
 
 UserSchema.methods.comparePassword = function(password) {
-  return bcrypt.compare(password, this.hash, (err) => {
-    console.log('compare password err: ', err);
-  });
+  return bcrypt.compare(password, this.password);
 };
 
 UserSchema.plugin(uniqueValidator);

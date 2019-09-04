@@ -8,6 +8,7 @@ module.exports = (uri) => new Promise((resolve, reject) => {
 
   mongoose.connect(uri,
     { useCreateIndex: true,
-      useNewUrlParser: true }
+      useNewUrlParser: true,
+      useFindAndModify: false }
   );
 });

@@ -8,7 +8,17 @@ function makeNewDocument(item, collection) {
   return newItem.save();
 }
 
+function updateDocument(collection, id, data) {
+  return collection.findByIdAndUpdate(id, data, { new: true });
+}
+
+async function deleteDocument(collection, id) {
+  return await collection.findOneAndDelete({ _id: id });
+}
+
 module.exports = {
   findUser,
   makeNewDocument,
+  updateDocument,
+  deleteDocument
 };
