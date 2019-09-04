@@ -12,19 +12,24 @@ let UserSchema = new mongoose.Schema({
     type: String,
     rquire: true
   },
-  salt: {
-    type: String,
-    require: true
-  },
   displayName: {
     type: String,
     require: true
   }
 });
 
-UserSchema.virtual('password').set(function(password) {
-  this.hash = bcrypt.hash(password, 10, (err) => {
-    console.log('bcrypt err: ', err);
+UserSchema.pre('save', function(next) {
+  console.log('inside pre');
+  const user = this;
+  if (!user.isModified('password')) {
+    return next();
+  }
+  bcrypt.hash(user.password, 10, function(err, hash) {
+    if (err) {
+      return next(err);
+    }
+    user.password = hash;
+    next();
   });
 });
 

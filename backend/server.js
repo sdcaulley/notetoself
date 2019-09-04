@@ -1,10 +1,16 @@
 const app = require('./lib/app');
-const http = require('http');
-const { PORT } = require('./config');
-require('./lib/connection');
+const connectDB = require('./lib/db');
+const { port, dburi } = require('./config');
 
-const server = http.createServer(app);
+(async () => {
+  try {
+    const info = await connectDB(dburi);
+    console.log(`Connected to ${info.host}:${info.port}/${info.name}`);
+  } catch (error) {
+    console.error('Unable to connect to database.');
+  }
 
-server.listen(PORT, () => {
-  console.log('server is running on ', server.address());
-});
+  await app.listen(port, () => {
+    console.log(`Server started on ${port}.`);
+  });
+})();

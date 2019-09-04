@@ -17,18 +17,19 @@
     "chai-http": "^4.3.0",
     "dotenv": "^8.1.0",
     "eslint": "^5.16.0",
+    "eslint-plugin-node": "^9.2.0",
+    "koa-logger": "^3.2.1",
     "mocha": "^6.1.4",
-    "morgan": "^1.9.1",
     "nodemon": "^1.19.0"
   },
   "dependencies": {
-    "argon2": "^0.24.1",
+    "@koa/cors": "^3.0.0",
     "bcrypt": "^3.0.6",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "express": "^4.17.0",
-    "express-jwt": "^5.3.1",
-    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.8.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-compose": "^4.1.0",
+    "koa-jwt": "^3.6.0",
+    "koa-route": "^3.2.0",
     "mongoose": "^5.5.9",
     "mongoose-unique-validator": "^2.0.3"
   }

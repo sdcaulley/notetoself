@@ -1,23 +1,24 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const users = require('./routes/user-route');
-//const category = require('./routes/category-routes');
-const app = express();
-const morgan = require('morgan');
+const Koa = require('koa');
+const route = require('koa-route');
+const middleware = require('./middleware');
+const user = require('./routes/user-route');
 
-//set up middleware
-app.use(morgan('combined'));
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+const app = new Koa();
+app.use(middleware());
 
-//set up routes
-app.use('/', users);
-//app.use('/category', category);
+//routes
+app.use(route.post('/user/registration', user.userRegistration));
+app.use(route.post('/user/login', user.userLogin));
 
-app.get('/', function(req, res) {
-  res.send('hello');
+//error handling
+app.use(async (ctx, next) => {
+  try {
+    await next();
+  } catch (err) {
+    ctx.status = err.status || 500;
+    ctx.body = err.message;
+    ctx.app.emit('error', err, ctx);
+  }
 });
 
 module.exports = app;

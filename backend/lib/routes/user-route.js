@@ -1,58 +1,43 @@
-const express = require('express');
-const router = express.Router();
 const User = require('../models/user-schema');
 const token = require('../auth/token');
+const { findUser, makeNewDocument } = require('../utilities/db-utils');
 
-//User registration
-router
-  .post('/register', (req, res) => {
-    let newUser = new User(req.body);
-    let userObj;
+async function userRegistration(ctx, next) {
+  console.log('hello from userRegistration');
+  const user = await makeNewDocument(ctx.request.body, User);
 
-    return newUser.save()
-      .then(user => {
-        userObj = user;
-        return token.sign(user);
-      })
-      .then(token => {
-        res.send({ userObj, token});
-      })
-      .catch(err => {
-        let message = 'That login is already in use.';
-        console.log('err: ', err);
-        res.send(message);
-      });
-  })
-  //user login
-  .post('/login', (req, res) => {
-    let userObj;
+  if (user) {
+    const userToken = await token.sign(user);
 
-    User.findOne({login: req.body.login})
-      .then(user => {
-        if (!user) {
-          throw {
-            code: 400,
-            error: 'User does not exist.'
-          };
-        } else if (!user.comparePassword(req.body.password)) {
-          throw {
-            code: 400,
-            error: 'Password is incorrect.'
-          };
-        }
-        return user;
-      })
-      .then(user => {
-        userObj = user;
-        return token.sign(user);
-      })
-      .then(token => {
-        res.send({userObj, token});
-      })
-      .catch(err => {
-        console.log('login err: ', err);
-        res.send(err.error);
-      });
-  });
+    ctx.response.body = {
+      user: {
+        id: user._id,
+        displayName: user.displayName
+      },
+      token: userToken
+    };
+    await next();
+  }
+}
 
-module.exports = router;
+async function userLogin(ctx, next) {
+  const user = await findUser(User, { login: ctx.request.body.login });
+  const hasPass = await user.comparePassword(ctx.request.body.password, next);
+  console.log('hasPass: ', hasPass);
+  if(hasPass) {
+    const userToken = await token.sign(user);
+    ctx.response.body = {
+      user: {
+        id: user._id,
+        displayName: user.displayName
+      },
+      token: userToken};
+  }
+
+  await next();
+}
+
+module.exports = {
+  userRegistration,
+  userLogin
+};

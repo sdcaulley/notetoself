@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('koa-jwt');
 const { sekret } = require('../../config');
 
 module.exports = {
