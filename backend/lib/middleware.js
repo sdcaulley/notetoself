@@ -1,7 +1,7 @@
 const compose = require('koa-compose');
 const logger = require('koa-logger');
 const cors = require('@koa/cors');
-const bodyparser = require('koa-body');
+const bodyparser = require('koa-bodyparser');
 
 
 function middleware() {

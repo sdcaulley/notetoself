@@ -1,6 +1,7 @@
-const User = require('../models/user-schema');
-const token = require('../auth/token');
-const dbUtils = require('../utilities/db-utils');
+const User = require('../../models/user-schema');
+const token = require('../../auth/token');
+const dbUtils = require('../../utilities/db-utils');
+const ensureAuth = require('../../auth/ensure-auth');
 
 async function userRegistration(ctx, next) {
   const user = await dbUtils.makeNewDocument(ctx.request.body, User);
@@ -37,6 +38,7 @@ async function userLogin(ctx, next) {
 }
 
 async function userUpdate(ctx, next) {
+  console.log('hello from userUpdate');
   const data = ctx.request.body;
   const payload = {};
 
@@ -72,9 +74,9 @@ async function userDelete(ctx) {
   }
 }
 
-module.exports = {
-  userRegistration,
-  userLogin,
-  userUpdate,
-  userDelete
+module.exports = (router) => {
+  router.post('/registration', userRegistration);
+  router.post('/login', userLogin);
+  router.patch('/update', ensureAuth, userUpdate);
+  router.delete('/:id', ensureAuth, userDelete);
 };
