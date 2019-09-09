@@ -3,8 +3,9 @@ const Router = require('@koa/router');
 const importDir = require('import-dir');
 
 const routerConfigs = [
-  { folder: 'user', prefix: '/user'},
-  { folder: 'categories', prefix: '/categories'}
+  { folder: 'user', prefix: '/user' },
+  { folder: 'category', prefix: '/category' },
+  { folder: 'note', prefix: '/note' }
 ];
 
 function routes() {

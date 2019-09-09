@@ -7,7 +7,8 @@ let CategorySchema = new Schema({
     require: true
   },
   dateCreated: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
   user: {
     type: Schema.Types.ObjectId,

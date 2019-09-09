@@ -4,7 +4,7 @@ const dbUtils = require('../../utilities/db-utils');
 const ensureAuth = require('../../auth/ensure-auth');
 
 async function userRegistration(ctx, next) {
-  const user = await dbUtils.makeNewDocument(ctx.request.body, User);
+  const user = await dbUtils.makeNewDocument(User, ctx.request.body);
 
   if (user) {
     const userToken = await token.sign(user);
@@ -63,8 +63,7 @@ async function userUpdate(ctx, next) {
 }
 
 async function userDelete(ctx) {
-  const array = ctx.request.url.split('/');
-  const id = array[2];
+  const id = await dbUtils.splitUrl(ctx.request.url);
   const confirm = dbUtils.deleteDocument(User, id);
   if(confirm) {
     ctx.response.body = {

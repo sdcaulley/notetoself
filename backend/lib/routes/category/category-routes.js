@@ -13,7 +13,7 @@ async function getCategories(ctx, next) {
 }
 
 async function addCategory(ctx, next) {
-  const category = await dbUtils.makeNewDocument(ctx.request.body, Category);
+  const category = await dbUtils.makeNewDocument(Category, ctx.request.body);
 
   ctx.response.body = {
     category: {
@@ -41,12 +41,11 @@ async function updateCategory(ctx, next) {
 }
 
 async function deleteCategory(ctx) {
-  const array = ctx.request.url.split('/');
-  const id = array[2];
+  const id = await dbUtils.splitUrl(ctx.request.url);
   const category = await dbUtils.findOneDocument(Category, { _id: id });
 
   //TODO: make sure there are no notes in this category before deletion
-  
+
   const confirm =  await dbUtils.deleteDocument(Category, id);
   if(confirm) {
     ctx.response.body = {
