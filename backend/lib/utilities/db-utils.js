@@ -1,5 +1,8 @@
+function findAllDocuments (collection) {
+  return collection.find();
+}
 
-function findUser (collection, search) {
+function findOneDocument (collection, search) {
   return collection.findOne(search);
 }
 
@@ -17,7 +20,8 @@ async function deleteDocument(collection, id) {
 }
 
 module.exports = {
-  findUser,
+  findAllDocuments,
+  findOneDocument,
   makeNewDocument,
   updateDocument,
   deleteDocument

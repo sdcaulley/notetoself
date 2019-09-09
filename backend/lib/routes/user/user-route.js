@@ -21,7 +21,7 @@ async function userRegistration(ctx, next) {
 }
 
 async function userLogin(ctx, next) {
-  const user = await dbUtils.findUser(User, { login: ctx.request.body.login });
+  const user = await dbUtils.findOneDocument(User, { login: ctx.request.body.login });
   const hasPass = await user.comparePassword(ctx.request.body.password, next);
 
   if(hasPass) {
@@ -38,7 +38,6 @@ async function userLogin(ctx, next) {
 }
 
 async function userUpdate(ctx, next) {
-  console.log('hello from userUpdate');
   const data = ctx.request.body;
   const payload = {};
 
@@ -67,7 +66,7 @@ async function userDelete(ctx) {
   const array = ctx.request.url.split('/');
   const id = array[2];
   const confirm = dbUtils.deleteDocument(User, id);
-  if (confirm) {
+  if(confirm) {
     ctx.response.body = {
       message: 'Your account has been deleted.'
     };
