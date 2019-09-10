@@ -1,0 +1,18 @@
+language: node_js
+
+node_js:
+  - 10
+
+sevices:
+  - mongodb
+
+before_install:
+  - sudo service mongod start
+
+install:
+  - cd $TRAVIS_BUILD_DIR/frontend && npm install
+  - cd $TRAVIS_BUILD_DIR/backend && npm install
+
+script:
+  - cd $TRAVIS_BUILD_DIR/backend && npm test
+  - cd $TRAVIS_BUILD_DIR/frontend && npm test

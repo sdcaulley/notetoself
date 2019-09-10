@@ -7,12 +7,15 @@
   "description": "backend for notetoself refresh",
   "main": "server.js",
   "scripts": {
-    "test": "mocha --recursive",
-    "start": "nodemon -r dotenv/config server.js"
+    "test": "c8 mocha --recursive test/*.js",
+    "start": "nodemon -r dotenv/config",
+    "coverage": "c8 report --reporter=json",
+    "lint": "eslint *.js test/*.js --fix"
   },
   "author": "sdcaulley",
   "license": "MIT",
   "devDependencies": {
+    "c8": "^5.0.4",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
     "dotenv": "^8.1.0",
