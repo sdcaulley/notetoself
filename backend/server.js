@@ -1,5 +1,5 @@
 const app = require('./lib/app');
-const connectDB = require('./lib/db');
+const connectDB = require('./lib/db/db');
 const { port, dburi } = require('./config');
 
 (async () => {

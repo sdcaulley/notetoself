@@ -1,20 +1,20 @@
 const jsonSize = require('json-size');
 
 function findAllDocuments (collection) {
-  return collection.find().lean();
+  return collection.find();
 }
 
 function findOneDocument (collection, search) {
-  return collection.findOne(search).lean();
+  return collection.findOne(search);
 }
 
 function makeNewDocument(collection, item) {
   let newItem = new collection(item);
-  return newItem.save().lean();
+  return newItem.save();
 }
 
 function updateDocument(collection, id, data) {
-  return collection.findByIdAndUpdate(id, data, { new: true }).lean();
+  return collection.findByIdAndUpdate(id, data, { new: true });
 }
 
 async function deleteDocument(collection, id) {
